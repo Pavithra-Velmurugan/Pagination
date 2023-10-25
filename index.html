@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagination Example</title>
+    <style>
+      .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+      }
+
+      .pagination li {
+        margin: 0 5px;
+      }
+
+      .pagination a {
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #333;
+        background-color: #555;
+        color: #fff;
+      }
+
+      .pagination a:hover {
+        background-color: #777;
+      }
+
+      .pagination .active a {
+        background-color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="pagination" class="pagination">
+      <!-- Pagination links will be added here dynamically -->
+    </ul>
+
+    <script>
+      const itemsPerPage = 5;
+      const totalItems = 20; // Change this to the total number of items you have.
+      const currentPage = 1; // Set the initial page to 1.
+
+      const pagination = document.getElementById("pagination");
+
+      function createPaginationButtons() {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        // Create "First" and "Previous" buttons
+        const firstButton = createPageButton("First", 1);
+        const prevButton = createPageButton("Previous", currentPage - 1);
+
+        pagination.appendChild(firstButton);
+        pagination.appendChild(prevButton);
+
+        for (let i = 1; i <= totalPages; i++) {
+          const pageButton = createPageButton(i, i);
+          pagination.appendChild(pageButton);
+        }
+
+        // Add click event listeners to handle page changes
+        const pageLinks = pagination.getElementsByTagName("a");
+        for (let i = 0; i < pageLinks.length; i++) {
+          pageLinks[i].addEventListener("click", (event) => {
+            event.preventDefault();
+            const pageNumber = parseInt(event.target.textContent);
+            handlePageClick(pageNumber);
+          });
+        }
+      }
+
+      function createPageButton(text, pageNumber) {
+        const li = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = "#";
+        link.textContent = text;
+        li.appendChild(link);
+
+        if (text === currentPage.toString()) {
+          li.classList.add("active");
+        }
+
+        return li;
+      }
+
+      function handlePageClick(pageNumber) {
+        currentPage = pageNumber;
+        const pageLinks = pagination.getElementsByTagName("a");
+
+        for (let i = 0; i < pageLinks.length; i++) {
+          if (pageLinks[i].textContent === pageNumber.toString()) {
+            pageLinks[i].parentNode.classList.add("active");
+          } else {
+            pageLinks[i].parentNode.classList.remove("active");
+          }
+        }
+
+        // Add logic here to display the corresponding items for the selected page.
+        // You might want to hide/show items accordingly.
+
+        // For the test suite, you can add your testing logic here.
+        // You might want to check if the correct page number is being selected.
+      }
+
+      createPaginationButtons();
+      handlePageClick(currentPage); // Display the initial page by default.
+    </script>
+  </body>
+</html>
